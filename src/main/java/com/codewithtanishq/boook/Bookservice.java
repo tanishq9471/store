@@ -27,6 +27,7 @@ public class Bookservice {
             return bookrepository.save(book);
         });
     }
+
     public Boolean deleteBook(Long id) {
         return bookrepository.findById(id).map(book -> {
             bookrepository.delete(book);

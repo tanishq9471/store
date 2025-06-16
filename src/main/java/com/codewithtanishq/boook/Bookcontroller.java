@@ -13,23 +13,27 @@ import java.util.Optional;
 public class Bookcontroller {
 
     private final Bookservice bookservice;
+
     @PostMapping
     public ResponseEntity<Book> saveBook(@RequestBody Book book) {
         Book savedBook = bookservice.saveBook(book);
         return ResponseEntity.ok(savedBook);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
         Optional<Book> book = bookservice.getBookbyid(id);
         return book.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PatchMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id,@RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
         Optional<Book> updatedBook = bookservice.updateBook(id, book);
         return updatedBook.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         boolean deleted = bookservice.deleteBook(id);

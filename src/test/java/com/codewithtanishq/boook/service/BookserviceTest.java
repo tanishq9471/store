@@ -1,5 +1,8 @@
-package com.codewithtanishq.boook;
+package com.codewithtanishq.boook.service;
 
+import com.codewithtanishq.boook.Book;
+import com.codewithtanishq.boook.Bookrepository;
+import com.codewithtanishq.boook.Bookservice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,27 +15,30 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BookserviceTest {
-@Mock
+    @Mock
     private Bookrepository bookrepository;
-@InjectMocks
+    @InjectMocks
     private Bookservice bookservice;
-private Book book;
-@BeforeEach
+    private Book book;
+
+    @BeforeEach
     void setUp() {
-    MockitoAnnotations.initMocks(this);
-    book = new Book();
-    book.setId(1L);
-    book.setTitle("Book Title");
-    book.setAuthor("Jack Bauer");
-    book.setPrice("99.9");
-}
-@Test
+        MockitoAnnotations.initMocks(this);
+        book = new Book();
+        book.setId(1L);
+        book.setTitle("Book Title");
+        book.setAuthor("Jack Bauer");
+        book.setPrice("99.9");
+    }
+
+    @Test
     void getsaveBooks() {
-    when(bookrepository.save(book)).thenReturn(book);
-    Book savedBook = bookservice.saveBook(book);
-    assertEquals(book, savedBook);
-    verify(bookrepository, times(1)).save(book);
-}
+        when(bookrepository.save(book)).thenReturn(book);
+        Book savedBook = bookservice.saveBook(book);
+        assertEquals(book, savedBook);
+        verify(bookrepository, times(1)).save(book);
+    }
+
     @Test
     void testGetBookById() {
         when(bookrepository.findById(1L)).thenReturn(Optional.of(book));
@@ -41,6 +47,7 @@ private Book book;
         assertEquals("Book Title", result.get().getTitle());
         verify(bookrepository, times(1)).findById(1L);
     }
+
     @Test
     void testUpdateBook() {
         Book updatedBook = new Book();
@@ -57,6 +64,7 @@ private Book book;
         assertEquals("Updated Title", result.get().getTitle());
         verify(bookrepository).save(book);
     }
+
     @Test
     void testDeleteBook() {
         when(bookrepository.findById(1L)).thenReturn(Optional.of(book));
@@ -66,6 +74,7 @@ private Book book;
         assertTrue(result);
         verify(bookrepository).delete(book);
     }
+
     @Test
     void testDeleteBookNotFound() {
         when(bookrepository.findById(1L)).thenReturn(Optional.empty());
@@ -75,7 +84,6 @@ private Book book;
         assertFalse(result);
         verify(bookrepository, never()).delete(any());
     }
-
 
 
 }
